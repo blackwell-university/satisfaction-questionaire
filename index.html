@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Mentoring - Blackwell University</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@4/material-ui.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --error-color: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: url('https://campus.blackwell.university/pluginfile.php/1/theme_alpha/loginbg/1731598420/portada-campus-virtual.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.2));
+            backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        form {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.5rem;
+            color: #2563eb;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .form-group:focus-within label {
+            color: var(--primary-color);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%232563eb'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5rem;
+            padding-right: 3rem;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            form {
+                padding: 2rem;
+                margin: 0.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0;
+            }
+
+            form {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            button {
+                padding: 1rem;
+            }
+        }
+
+        label[for*="required"]::after,
+        label:has(+ [required])::after {
+            content: " *";
+            color: #e11d48;
+            font-weight: bold;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        select:not(:placeholder-shown) {
+            border-color: #2563eb;
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        :focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="feedbackForm">
+            <h2>Evaluación de Mentoring</h2>
+
+            <div class="form-group">
+                <label for="nombre">Nombre y apellidos *</label>
+                <input type="text" id="nombre" name="nombre" required 
+                       placeholder="Ingrese su nombre completo">
+            </div>
+
+            <div class="form-group">
+                <label for="fecha">Fecha de reunión *</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+
+            <h3>Valoración del Mentor</h3>
+            <div class="form-group">
+                <label>Puntualidad del mentor *</label>
+                <select name="puntualidad" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Excelente puntualidad">Excelente puntualidad</option>
+                    <option value="Muy puntual">Muy puntual</option>
+                    <option value="Puntual">Puntual</option>
+                    <option value="Impuntual">Impuntual</option>
+                    <option value="Muy impuntual">Muy impuntual</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>¿El mentor entendió tus necesidades? *</label>
+                <select name="entendimiento" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Completamente entendió">Completamente entendió</option>
+                    <option value="Entendió bien">Entendió bien</option>
+                    <option value="Aceptablemente">Aceptablemente</option>
+                    <option value="Poco entendió">Poco entendió</option>
+                    <option value="No entendió">No entendió</option>
+                </select>
+            </div>
+
+            <h3>Valoración de la Reunión</h3>
+            <div class="form-group">
+                <label>Duración adecuada *</label>
+                <select name="duracion" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Demasiado larga">Demasiado larga</option>
+                    <option value="Larga">Larga</option>
+                    <option value="Adecuada">Adecuada</option>
+                    <option value="Corta">Corta</option>
+                    <option value="Demasiado corta">Demasiado corta</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Comunicación clara *</label>
+                <select name="comunicacion" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Muy clara">Muy clara</option>
+                    <option value="Clara">Clara</option>
+                    <option value="Algo clara">Algo clara</option>
+                    <option value="Confusa">Confusa</option>
+                    <option value="Muy confusa">Muy confusa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Se cubrieron los temas esperados *</label>
+                <select name="temas" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Todos los temas">Todos los temas</option>
+                    <option value="La mayoría de los temas">La mayoría de los temas</option>
+                    <option value="Algunos temas">Algunos temas</option>
+                    <option value="Pocos temas">Pocos temas</option>
+                    <option value="No se cubrieron">No se cubrieron</option>
+                </select>
+            </div>
+
+            <h3>Impacto</h3>
+            <div class="form-group">
+                <label>¿La reunión cumplió tus expectativas? *</label>
+                <select name="expectativas" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Completamente cumplió">Completamente cumplió</option>
+                    <option value="Cumplió bastante">Cumplió bastante</option>
+                    <option value="Cumplió parcialmente">Cumplió parcialmente</option>
+                    <option value="No cumplió mucho">No cumplió mucho</option>
+                    <option value="No cumplió en absoluto">No cumplió en absoluto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>¿Te ayudará en tus metas? *</label>
+                <select name="metas" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Mucho">Mucho</option>
+                    <option value="Bastante">Bastante</option>
+                    <option value="Algo">Algo</option>
+                    <option value="Poco">Poco</option>
+                    <option value="Nada">Nada</option>
+                </select>
+            </div>
+
+            <h3>Comentarios Adicionales</h3>
+            <div class="form-group">
+                <label>¿Qué mejorarías en futuras reuniones?</label>
+                <textarea name="comentarios" 
+                          placeholder="Comparte tus sugerencias para mejorar futuras sesiones..."></textarea>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="formProgress"></div>
+            </div>
+
+            <button type="submit">Enviar Evaluación</button>
+        </form>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const form = document.getElementById('feedbackForm');
+            const requiredFields = form.querySelectorAll('[required]');
+            const filledFields = Array.from(requiredFields).filter(field => field.value.trim() !== '');
+            const progress = (filledFields.length / requiredFields.length) * 100;
+            
+            document.getElementById('formProgress').style.width = `${progress}%`;
+        }
+
+        document.querySelectorAll('[required]').forEach(field => {
+            field.addEventListener('change', updateProgress);
+            field.addEventListener('input', updateProgress);
+        });
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            Swal.fire({
+                title: 'Enviando tu evaluación',
+                html: `
+                    <div class="swal2-loading">
+                        <i class="swal2-success-line-tip"></i>
+                        <i class="swal2-success-line-long"></i>
+                    </div>
+                    <p>Por favor, espera un momento...</p>
+                `,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch('https://script.google.com/macros/s/AKfycbxhK7_UtjLKxtPosYMrQJ9NTwSV12JJvA1TKMGd7oI9VRpklLCCfWRzpzJFOspoNRMK/exec', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Gracias por tu feedback!',
+                        text: 'Tu evaluación ha sido enviada exitosamente.',
+                        confirmButtonColor: '#2563eb',
+                        confirmButtonText: 'Entendido',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        }
+                    });
+                    event.target.reset();
+                    document.getElementById('formProgress').style.width = '0%';
+                } else {
+                    throw new Error('Error en el servidor');
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Hubo un error al enviar tu evaluación. Por favor, intenta nuevamente.',
+                    confirmButtonColor: '#2563eb',
+                    confirmButtonText: 'Intentar de nuevo'
+                });
+            });
+        });
+
+        const fechaInput = document.getElementById('fecha');
+        const hoy = new Date().toISOString().split('T')[0];
+        fechaInput.max = hoy;
+
+        document.querySelectorAll('.form-group').forEach((group, index) => {
+            group.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>
